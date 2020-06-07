@@ -13,6 +13,10 @@ public class BR_Player : MonoBehaviour
     [SerializeField]
     private Vector3 cameraOffset;
 
+    [SerializeField]
+    private SpriteRenderer avatarRenderer;
+
+
     private float health = 100.0f;
 
     private void Start()
@@ -28,6 +32,11 @@ public class BR_Player : MonoBehaviour
     public int GetScore()
     {
         return (int)(100 - health);
+    }
+
+    public void SetSprite(Sprite sprite)
+    {
+        avatarRenderer.sprite = sprite;
     }
 
     public void DamagePlayer(float damage)

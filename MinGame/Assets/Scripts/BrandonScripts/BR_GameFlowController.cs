@@ -39,6 +39,9 @@ public class BR_GameFlowController : MonoBehaviour
 
         SetUpPlayer(false);
         dragText.gameObject.SetActive(false);
+
+        player1.SetSprite(GameFlow.Instance.GetPlayerSprite(0));
+        player2.SetSprite(GameFlow.Instance.GetPlayerSprite(1));
     }
 
     private void SetUpPlayer(bool moveNext = false)
