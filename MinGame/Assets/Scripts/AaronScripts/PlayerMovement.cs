@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float moveSpeed;
 
-    public const float XBOUNDS = 8;
+    public const float XBOUNDS = 11;
 
     // Update is called once per frame
     private void Update()
