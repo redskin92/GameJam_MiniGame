@@ -61,7 +61,6 @@ public class BR_GameFlowController : MonoBehaviour
     {
         if (!trackMouse)
             return;
-        Debug.Log("OnMouseDown");
 
         dragVector = Vector3.zero;
         originalMousePosition = Input.mousePosition;
@@ -119,9 +118,6 @@ public class BR_GameFlowController : MonoBehaviour
         trackMouse = false;
         clickCollider.enabled = false;
 
-        Debug.Log(dragVector.magnitude);
-
-
         float throwVelocity = Mathf.Min(dragVector.magnitude, 500.0f) / 500.0f;
         throwVelocity = 100 * throwVelocity;
 
@@ -129,7 +125,6 @@ public class BR_GameFlowController : MonoBehaviour
 
         currentBomb.Throw(directionVec);
         trackbomb = true;
-        Debug.Log("Throwing at " + directionVec);
         dragText.gameObject.SetActive(false);
 
     }
