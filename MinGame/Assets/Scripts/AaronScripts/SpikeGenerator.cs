@@ -23,7 +23,7 @@ public class SpikeGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spawnRateCurrent = spawnRateStart;
+        spawnRateCurrent = 0;
         spawnRateDecreaseCurrent = spawnRateDecreaseTime;
     }
 

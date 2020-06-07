@@ -7,7 +7,7 @@ public class SpikeMovement : MonoBehaviour
     [SerializeField]
     private float speed = 1.0f;
 
-    private const float YBOUNDS = 5;
+    private const float YBOUNDS = 8;
 
     // Update is called once per frame
     void Update()
