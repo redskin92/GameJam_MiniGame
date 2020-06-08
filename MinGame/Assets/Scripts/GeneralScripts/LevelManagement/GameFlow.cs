@@ -100,7 +100,7 @@ public class GameFlow : MonoBehaviour
     {
         for (int i = 0; i < scores.Count; ++i)
         {
-            PlayerInfo[i].score = scores[i];
+            PlayerInfo[i].score += scores[i];
         }
 
         levelManager.TransitionComplete += TransitionCompleted;
