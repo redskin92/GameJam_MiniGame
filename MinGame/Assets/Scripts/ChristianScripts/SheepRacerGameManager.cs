@@ -14,6 +14,11 @@ namespace ChristianScripts
         #region Fields
 
         /// <summary>
+        /// Base string for the Ready text.
+        /// </summary>
+        private const string READY_TEXT_BASE = "Player {0}, Ready!? GO!";
+
+        /// <summary>
         /// Time to wait before spawning the first obstacle.
         /// </summary>
         [SerializeField]
@@ -32,6 +37,12 @@ namespace ChristianScripts
         private float timeBeforeGameEnd = 1f;
 
         /// <summary>
+        /// The time after spawning the final object to end the game.
+        /// </summary>
+        [SerializeField]
+        private float textDisplayTime = 1f;
+
+        /// <summary>
         /// The total number of obstacles to spawn.
         /// </summary>
         [SerializeField]
@@ -44,10 +55,10 @@ namespace ChristianScripts
         private GameObject obstaclePrefab;
 
         /// <summary>
-        /// Spawn points for the obstacles.
+        /// Spawn point for the obstacles.
         /// </summary>
         [SerializeField]
-        private Transform[] obstacleSpawnPoints;
+        private Transform obstacleSpawnPoint;
 
         /// <summary>
         /// Parent object for the obstacles.
@@ -67,7 +78,13 @@ namespace ChristianScripts
         [SerializeField]
         private Text racer1ScoreText, racer2ScoreText;
 
+        /// <summary>
+        /// The scores for each racer.
+        /// </summary>
         private int racer1Score = 0, racer2Score = 0;
+
+        [SerializeField]
+        private Text readyText;
 
         /// <summary>
         /// The number of obstacles that have been spawned.
@@ -83,7 +100,6 @@ namespace ChristianScripts
             sheepRacers[0].OnJumpSuccess += Racer1_OnJumpSuccess;
             sheepRacers[1].OnJumpSuccess += Racer2_OnJumpSuccess;
 
-            // TEMP! Start Game should occur in a different way.
             StartGame();
         }
 
@@ -103,40 +119,97 @@ namespace ChristianScripts
 
         #region Methods
 
+        /// <summary>
+        /// Start the game.
+        /// </summary>
         public void StartGame()
         {
             StartCoroutine(RaceSequence());
         }
 
+        /// <summary>
+        /// The sequence for the race.
+        /// </summary>
         private IEnumerator RaceSequence()
         {
-            yield return new WaitForSeconds(timeBeforeFirstObstacle);
-
-            do
+            for (int i = 0; i < sheepRacers.Length; i++)
             {
-                SpawnObstacle();
+                EnableSheepRacer(i);
 
-                for (int i = 0; i < sheepRacers.Length; i++)
+                ClearObstacles();
+
+                DisplayReadyText(i + 1);
+
+                yield return new WaitForSeconds(textDisplayTime);
+
+                HideReadyText();
+
+                yield return new WaitForSeconds(timeBeforeFirstObstacle);
+
+                do
+                {
+                    SpawnObstacle();
+
                     sheepRacers[i].EnableKeyPrompt();
 
-                yield return new WaitForSeconds(timeBetweenObstacles);
-            } while (obstaclesSpawned < obstaclesToSpawn);
+                    yield return new WaitForSeconds(timeBetweenObstacles);
+                } while (obstaclesSpawned < obstaclesToSpawn);
 
-            yield return new WaitForSeconds(timeBeforeGameEnd);
+                yield return new WaitForSeconds(timeBeforeGameEnd);
+            }
 
             GameFlow.Instance.LevelComplete(new List<int> { racer1Score, racer2Score });
         }
 
+        /// <summary>
+        /// Spawn an obstacle.
+        /// </summary>
         private void SpawnObstacle()
         {
-            for (int i = 0; i < obstacleSpawnPoints.Length; i++)
-            {
-                GameObject obstacle = Instantiate(obstaclePrefab, obstacleSpawnPoints[i].position, obstaclePrefab.transform.rotation);
-                obstacle.name = "Obstacle " + (i + 1);
-                obstacle.transform.parent = obstacleParent;
-            }
+            GameObject obstacle = Instantiate(obstaclePrefab, obstacleSpawnPoint.position, obstaclePrefab.transform.rotation);
+            obstacle.name = "Obstacle " + ++obstaclesSpawned;
+            obstacle.transform.parent = obstacleParent;
+        }
 
-            obstaclesSpawned++;
+        /// <summary>
+        /// Display the Ready text at the start of a turn.
+        /// </summary>
+        /// <param name="playerNum">The player we're displaying this for.</param>
+        private void DisplayReadyText(int playerNum)
+        {
+            readyText.text = string.Format(READY_TEXT_BASE, playerNum);
+            readyText.gameObject.SetActive(true);
+        }
+
+        /// <summary>
+        /// Hide the ready text.
+        /// </summary>
+        private void HideReadyText()
+        {
+            readyText.gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// Enable the correct sheep.
+        /// </summary>
+        /// <param name="index"></param>
+        private void EnableSheepRacer(int index)
+        {
+            for (int i = 0; i < sheepRacers.Length; i++)
+            {
+                sheepRacers[i].gameObject.SetActive(i == index);
+            }
+        }
+
+        /// <summary>
+        /// Clear the old obstacles.
+        /// </summary>
+        private void ClearObstacles()
+        {
+            foreach (Transform t in obstacleParent)
+                Destroy(t.gameObject);
+
+            obstaclesSpawned = 0;
         }
 
         #endregion

@@ -20,6 +20,9 @@ namespace ChristianScripts
         [SerializeField]
         private float obstacleMoveSpeed;
 
+        /// <summary>
+        /// The key we have chosen to display.
+        /// </summary>
         private KeyCode chosenKeyCode;
 
         #endregion
@@ -52,6 +55,9 @@ namespace ChristianScripts
 
         #region Methods
 
+        /// <summary>
+        /// Generate the key text.
+        /// </summary>
         private void GenerateText()
         {
             int randomNum = Random.Range(97, 122);
