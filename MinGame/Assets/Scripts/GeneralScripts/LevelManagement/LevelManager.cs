@@ -10,6 +10,9 @@ using System;
 
 public class LevelManager : MonoBehaviour
 {
+    [SerializeField]
+    private int numRounds = 5;
+
     public List<string> levelNames;
 
     public BackgroundFadeManager backgroundFadeManager;
@@ -23,10 +26,14 @@ public class LevelManager : MonoBehaviour
 
     public int LevelIndex { get; set; }
 
+    public int LevelSelected { get; set; }
+
     // set some variables just in case
     void Awake()
     {
         LevelIndex = 0;
+
+        LevelSelected = 0;
 
         if (levelNames != null && levelNames.Count > 0)
         {
@@ -66,11 +73,13 @@ public class LevelManager : MonoBehaviour
             // inscrese to the next level
             //++LevelIndex;
 
-            if (levels.Count > 0)
+            if (numRounds > 0)
             {
-                LevelIndex = levels[UnityEngine.Random.Range(0, levels.Count - 1)];
+                LevelIndex = levels[LevelSelected];
 
-                levels.Remove(LevelIndex);
+                //levels.Remove(LevelIndex);
+
+                --numRounds;
             }
             else
             {
@@ -108,6 +117,21 @@ public class LevelManager : MonoBehaviour
 
         backgroundFadeManager.FadeInComplete += FadeInCompleted;
         backgroundFadeManager.SetTimer(1.0f, true);
+    }
+
+    // move to display results after one of our levels
+    public void MoveToBoard()
+    {
+        currentSceneLoaded = newSceneToLoad;
+        newSceneToLoad = "BoardScene";
+
+        backgroundFadeManager.FadeInComplete += FadeInCompleted;
+        backgroundFadeManager.SetTimer(1.0f, true);
+    }
+
+    public int GetLevelCount()
+    {
+        return levels.Count;
     }
 
     /// <summary>

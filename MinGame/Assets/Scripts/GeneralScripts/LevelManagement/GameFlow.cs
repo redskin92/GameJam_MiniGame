@@ -15,7 +15,7 @@ public class GameFlow : MonoBehaviour
     // the static class for GameFlow
     public static GameFlow Instance
     {
-        get;set;
+        get; set;
     }
 
     // the list of sprite characters available
@@ -37,7 +37,7 @@ public class GameFlow : MonoBehaviour
     }
 
     // Used to intialize level manager and move to the character select scene
-    void Awake ()
+    void Awake()
     {
         levelManager.TransitionComplete += TransitionCompleted;
         levelManager.MoveToNextLevel(false);
@@ -79,7 +79,7 @@ public class GameFlow : MonoBehaviour
     // Called when the character select screen has selected characters
     public void CharacterSelectionComplete(List<string> names, List<int> spriteIndexes)
     {
-        for(int i = 0; i < names.Count; ++i)
+        for (int i = 0; i < names.Count; ++i)
         {
             PlayerInfo.Add(new PlayerInfo(names[i], spriteIndexes[i]));
         }
@@ -108,6 +108,38 @@ public class GameFlow : MonoBehaviour
         levelManager.MoveToDisplayResults();
     }
 
+    public void MoveToBoard()
+    {
+        levelManager.TransitionComplete += TransitionCompleted;
+
+        levelManager.MoveToBoard();
+    }
+
+    public void MoveFromBoardRandom()
+    {
+        levelManager.LevelSelected = UnityEngine.Random.Range(0, levelManager.GetLevelCount() - 1);
+
+        levelManager.TransitionComplete += TransitionCompleted;
+
+        levelManager.MoveToGameRules();
+    }
+
+    public void MoveFromBoard(int nextLevel)
+    {
+        if (nextLevel >= 0 && nextLevel < levelManager.GetLevelCount())
+        {
+            levelManager.LevelSelected = nextLevel;
+
+            levelManager.TransitionComplete += TransitionCompleted;
+
+            levelManager.MoveToGameRules();
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("NextLevel is not within the bounds of possibel levels: " + nextLevel);
+        }
+    }
+
     /// <summary>
     ///  Called when the game rules are completed
     ///  move on to to the game
@@ -128,7 +160,7 @@ public class GameFlow : MonoBehaviour
         {
             levelManager.TransitionComplete += TransitionCompleted;
 
-            levelManager.MoveToGameRules();
+            levelManager.MoveToBoard();
         }
         else
         {
