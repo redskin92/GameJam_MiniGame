@@ -33,7 +33,7 @@ namespace Menu
 
         private MenuState _currentState = MenuState.Root;
 
-        private bool _allowLevelSelect = true;
+        private bool _allowLevelSelect = false;
 
         public MenuState CurrentState
         {
@@ -65,7 +65,11 @@ namespace Menu
 
         private void StartButton_Pressed()
         {
-            startGameWindow.Open();
+            // If allow level select, open window to select level.
+            if(_allowLevelSelect)
+                startGameWindow.Open();
+            else
+                GameFlow.Instance.MoveToBeach();
         }
 
         private void OptionButton_Pressed()
