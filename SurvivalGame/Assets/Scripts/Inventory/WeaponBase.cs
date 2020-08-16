@@ -1,4 +1,5 @@
-﻿
+﻿using Player.Weapons;
+
 namespace Inventory
 {
     /// <summary>
@@ -6,6 +7,12 @@ namespace Inventory
     /// </summary>
     public class WeaponBase : ItemBase, IEquippable
     {
+        #region Fields
+
+        public WeaponInfo weaponInfo;
+
+        #endregion
+
         #region IEquippable
 
         /// <summary>
