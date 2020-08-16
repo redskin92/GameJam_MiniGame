@@ -7,8 +7,15 @@ namespace Player.Weapons
         private WeaponInfo currentWeapon;
         private float fireRateCooldownTimer = 0.0f;
 
+        SpriteRenderer spriteRenderer;
+
+        private void Awake()
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (fireRateCooldownTimer > 0.0f)
                 fireRateCooldownTimer -= Time.deltaTime;
@@ -18,6 +25,8 @@ namespace Player.Weapons
         {
             fireRateCooldownTimer = -1.0f;
             currentWeapon = newWeapon;
+
+            spriteRenderer.sprite = newWeapon.weaponSprite;
         }
 
         public bool Fire()
