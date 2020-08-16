@@ -1,4 +1,5 @@
 ﻿using System;
+using Settings;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,8 +41,6 @@ namespace Menu
 
         private MenuState _currentState = MenuState.Root;
 
-        private bool _allowLevelSelect = false;
-
         #endregion
 
         #region Properties
@@ -81,7 +80,7 @@ namespace Menu
         private void StartButton_Pressed()
         {
             // If allow level select, open window to select level.
-            if(_allowLevelSelect)
+            if(SettingsManager.Instance.AllowLevelSelect)
                 startGameWindow.Open();
             else
                 GameFlow.Instance.MoveToBeach();
