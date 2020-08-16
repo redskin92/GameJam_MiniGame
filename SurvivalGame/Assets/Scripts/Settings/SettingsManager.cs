@@ -53,7 +53,6 @@ namespace Settings
         {
             string settingsJson = JsonUtility.ToJson(_settingsData);
             File.WriteAllText(SettingsPath, settingsJson);
-            Debug.Log(SettingsPath);
         }
 
         public void LoadSettings()
