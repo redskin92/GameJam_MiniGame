@@ -31,9 +31,14 @@ namespace Player
 
         private void CheckInput()
         {
-            if(Input.GetMouseButtonDown(0))
+            if(Input.GetMouseButton(0))
             {
-                playerWeapon.Fire();
+                if(playerWeapon.CanFire())
+                {
+                    Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
+                    Vector3 dir = Input.mousePosition - objectPos;
+                    playerWeapon.Fire(this.transform.rotation);                    
+                }
             }
         }
 

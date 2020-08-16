@@ -305,6 +305,8 @@ MonoBehaviour:
     damage: 5
     weaponSprite: {fileID: 21300000, guid: 738c80f04834cab41bb678cb368ec5cd, type: 3}
     weaponReticle: {fileID: 21300000, guid: a1d1d0ae26cec0447949d1095a264298, type: 3}
+    bulletPrefab: {fileID: 8160714516344298647, guid: 99fac9b4345462f4293c9cdd75d7a60c,
+      type: 3}
 --- !u!1 &996082747
 GameObject:
   m_ObjectHideFlags: 0

@@ -29,16 +29,16 @@ namespace Player.Weapons
             spriteRenderer.sprite = newWeapon.weaponSprite;
         }
 
-        public bool Fire()
+        public bool CanFire()
         {
-            if(fireRateCooldownTimer > 0f)
-            {
-                
-                return false;
-            }
+            return fireRateCooldownTimer <= 0.0f;
+        }
 
-            //Fire
-            return true;
+        public void Fire(Quaternion playerFace)
+        {
+            fireRateCooldownTimer = currentWeapon.fireRate;
+            GameObject newBullet = GameObject.Instantiate(currentWeapon.bulletPrefab, this.transform.position, playerFace);
+            newBullet.GetComponent<Bullet>().SetUpBullet();
         }
     }
 }

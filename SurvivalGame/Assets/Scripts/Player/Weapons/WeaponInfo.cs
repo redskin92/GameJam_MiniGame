@@ -14,5 +14,6 @@ namespace Player.Weapons
 
         public Sprite weaponSprite;
         public Sprite weaponReticle;
+        public GameObject bulletPrefab;
     }
 }
