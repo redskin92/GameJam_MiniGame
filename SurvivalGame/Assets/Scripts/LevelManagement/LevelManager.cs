@@ -45,6 +45,16 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    public void LoadInUI()
+    {
+        SceneManager.LoadSceneAsync("GameHUD", LoadSceneMode.Additive);
+    }
+
+    public void UnLoadUI()
+    {
+        SceneManager.UnloadSceneAsync("GameHUD");
+    }
+
     // move on to the next level (one of our levels)
     public bool MoveToLevel(bool fadeOut, int level)
     {
