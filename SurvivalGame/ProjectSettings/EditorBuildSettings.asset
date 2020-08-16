@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RockyCoastScene.unity
     guid: 1b45cf15802aae34495da50617e9326e
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 89944a9e79646fd4a9b280779bc433e7
+  - enabled: 1
+    path: Assets/Scenes/GameHUD.unity
+    guid: 666e25d40e5cce740b18f91711b588c8
   m_configObjects: {}

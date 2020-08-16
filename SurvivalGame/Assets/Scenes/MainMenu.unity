@@ -798,7 +798,6 @@ GameObject:
   m_Component:
   - component: {fileID: 394389364}
   - component: {fileID: 394389363}
-  - component: {fileID: 394389362}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -806,14 +805,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &394389362
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 394389361}
-  m_Enabled: 1
 --- !u!20 &394389363
 Camera:
   m_ObjectHideFlags: 0
@@ -1180,7 +1171,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cab2ae488028b7348b1af8a6590729b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 589877625}
   closeMenuButton: {fileID: 2079104287}
 --- !u!1 &635131547
 GameObject:
@@ -1936,7 +1926,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92766f00b5b6cb541ba48aec41f90e23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvas: {fileID: 1191117996}
   closeMenuButton: {fileID: 1302856572}
 --- !u!1 &1227606766
 GameObject:

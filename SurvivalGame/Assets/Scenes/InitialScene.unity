@@ -365,6 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelNames:
+  - MainMenu
   - BeachScene
   - ForestScene
   - RockyCoastScene

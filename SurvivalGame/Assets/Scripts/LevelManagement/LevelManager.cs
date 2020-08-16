@@ -76,22 +76,27 @@ public class LevelManager : MonoBehaviour
         return false;
     }
 
-    // move to display results after one of our levels
-    public void MoveToBeach()
+    public void MoveToMainMenu()
     {
         MoveToLevel(true, 0);
     }
 
     // move to display results after one of our levels
-    public void MoveToForest()
+    public void MoveToBeach()
     {
         MoveToLevel(true, 1);
+    }
+
+    // move to display results after one of our levels
+    public void MoveToForest()
+    {
+        MoveToLevel(true, 2);
     }
 
     // load in the game rules
     public void MoveToRockyCoast()
     {
-        MoveToLevel(true, 2);
+        MoveToLevel(true, 3);
     }
 
     public int GetLevelCount()

@@ -22,15 +22,22 @@ public class GameFlow : MonoBehaviour
         get { return levelManager.LevelIndex; }
     }
 
-    // Used to intialize level manager and move to the character select scene
+    // Used to initalize level manager and move to the character select scene
     void Awake()
     {
         levelManager.TransitionComplete += TransitionCompleted;
 
-        //intiially move to beach
+        //initially move to MainMenu
         levelManager.MoveToLevel(false, 0);
 
         Instance = this;
+    }
+
+    public void MoveToMainMenu()
+    {
+        levelManager.TransitionComplete += TransitionCompleted;
+        
+        levelManager.MoveToMainMenu();
     }
 
     public void MoveToForest()
