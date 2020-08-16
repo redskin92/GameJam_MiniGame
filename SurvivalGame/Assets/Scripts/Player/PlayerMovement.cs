@@ -16,92 +16,46 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        float x = 0;
+        float y = 0;
+
         //Detect when the up arrow key is pressed down
         if (Input.GetKey(KeyCode.A))
         {
-            MoveLeft();
+            x = -moveSpeed;
         }
 
         //Detect when the up arrow key has been released
         if (Input.GetKey(KeyCode.D))
         {
-            MoveRight();
+            x = moveSpeed;
         }
 
         //Detect when the up arrow key is pressed down
         if (Input.GetKey(KeyCode.W))
         {
-            MoveUp();
+            y = moveSpeed;
         }
 
         //Detect when the up arrow key is pressed down
         if (Input.GetKey(KeyCode.S))
         {
-            MoveDown();
+            y = -moveSpeed;
         }
+
+        ApplyMovement(x,y);
     }
 
-    private void MoveLeft()
+    public void ApplyMovement(float x, float y)
     {
-        float currentX = transform.position.x;
+        Vector3 normalizedMovement = new Vector3(x, y, 0);
 
-        if (currentX - moveSpeed >= -xBounds)
-        {
-            currentX -= moveSpeed;
-        }
-        else
-        {
-            currentX = -xBounds;
-        }
+        normalizedMovement.Normalize();
 
-        transform.position = new Vector3(currentX, transform.position.y, transform.position.z);
-    }
+        normalizedMovement.x *= moveSpeed;
 
-    private void MoveRight()
-    {
-        float currentX = transform.position.x;
+        normalizedMovement.y *= moveSpeed;
 
-        if (currentX + moveSpeed <= xBounds)
-        {
-            currentX += moveSpeed;
-        }
-        else
-        {
-            currentX = xBounds;
-        }
-
-        transform.position = new Vector3(currentX, transform.position.y, transform.position.z);
-    }
-
-    private void MoveDown()
-    {
-        float currentY = transform.position.y;
-
-        if (currentY - moveSpeed >= -yBounds)
-        {
-            currentY -= moveSpeed;
-        }
-        else
-        {
-            currentY = -yBounds;
-        }
-
-        transform.position = new Vector3(transform.position.x, currentY, transform.position.z);
-    }
-
-    private void MoveUp()
-    {
-        float currentY = transform.position.y;
-
-        if (currentY + moveSpeed <= yBounds)
-        {
-            currentY += moveSpeed;
-        }
-        else
-        {
-            currentY = yBounds;
-        }
-
-        transform.position = new Vector3(transform.position.x, currentY, transform.position.z);
+        transform.position += normalizedMovement;
     }
 }
