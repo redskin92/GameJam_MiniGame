@@ -15,25 +15,40 @@ namespace Menu
         public override void InitializeWindow()
         {
             base.InitializeWindow();
-            saveButton.onClick.AddListener(SaveButton_Pressed);
         }
         
         public override void Open()
         {
             base.Open();
-
-            allowLevelSelectToggle.isOn = SettingsManager.Instance.AllowLevelSelect;
+            UpdateOptions();
+            RegisterOptionEvents();
         }
 
         public override void Close()
         {
             base.Close();
+            UnregisterOptionEvents();
         }
 
         public void SaveSettings()
         {
             SettingsManager.Instance.AllowLevelSelect = allowLevelSelectToggle.isOn;
             SettingsManager.Instance.SaveSettings();
+        }
+
+        private void UpdateOptions()
+        {
+            allowLevelSelectToggle.isOn = SettingsManager.Instance.AllowLevelSelect;
+        }
+
+        private void RegisterOptionEvents()
+        {
+            saveButton.onClick.AddListener(SaveButton_Pressed);
+        }
+
+        private void UnregisterOptionEvents()
+        {
+            saveButton.onClick.RemoveListener(SaveButton_Pressed);
         }
 
         private void SaveButton_Pressed()
