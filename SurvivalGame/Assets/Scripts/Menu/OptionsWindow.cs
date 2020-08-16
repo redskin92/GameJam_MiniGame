@@ -54,6 +54,7 @@ namespace Menu
         private void SaveButton_Pressed()
         {
             SaveSettings();
+            Close();
         }
     }
 }
