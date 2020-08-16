@@ -4,5 +4,17 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/InitialScene.unity
+    guid: 442df956275d1064aa2e656d9e6d6353
+  - enabled: 1
+    path: Assets/Scenes/BeachScene.unity
+    guid: 4ae3a75207bfb184283fb2b79080f921
+  - enabled: 1
+    path: Assets/Scenes/ForestScene.unity
+    guid: 243267e06b74033499a2832127e900cd
+  - enabled: 1
+    path: Assets/Scenes/RockyCoastScene.unity
+    guid: 1b45cf15802aae34495da50617e9326e
   m_configObjects: {}
