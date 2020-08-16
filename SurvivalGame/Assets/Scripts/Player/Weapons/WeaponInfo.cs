@@ -1,4 +1,6 @@
-﻿namespace Player.Weapons
+﻿using UnityEngine;
+
+namespace Player.Weapons
 {
     public struct WeaponInfo
     {
@@ -7,5 +9,8 @@
         public FireType fireType;
         public float fireRate;
         public float damage;
+
+        public Sprite weaponSprite;
+        public Sprite weaponReticle;
     }
 }

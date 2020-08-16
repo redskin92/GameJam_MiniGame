@@ -5,7 +5,7 @@ namespace Player
     public class Player : MonoBehaviour
     {
         Vector3 lookToVector = new Vector3();
-        public Sprite currentReticle;
+        
 
         // Start is called before the first frame update
         void Start()
