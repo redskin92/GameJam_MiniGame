@@ -58,8 +58,6 @@ namespace Settings
 
         public void LoadSettings()
         {
-            Debug.Log(SettingsPath);
-
             if (File.Exists(SettingsPath))
                 _settingsData = JsonUtility.FromJson<SettingsData>(File.ReadAllText(SettingsPath));
             else
