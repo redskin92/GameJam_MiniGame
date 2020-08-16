@@ -1,4 +1,4 @@
-﻿
+﻿using UnityEngine;
 
 namespace Inventory
 {
@@ -7,6 +7,16 @@ namespace Inventory
     /// </summary>
     public class PotionItem : ItemBase, IConsumableItem
     {
+        #region Fields
+
+        /// <summary>
+        /// The amount to heal.
+        /// </summary>
+        [SerializeField]
+        private float amountToHeal;
+
+        #endregion
+
         #region IConsumableItem
 
         /// <summary>

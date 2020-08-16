@@ -10,7 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c3f1c8199d4026a45b03e49adf8402e2, type: 3}
-  m_Name: New Inventory
+  m_Name: Potion
   m_EditorClassIdentifier: 
   itemName: Potion
   maxStack: 10
+  itemSprite: {fileID: 0}
+  amountToHeal: 5

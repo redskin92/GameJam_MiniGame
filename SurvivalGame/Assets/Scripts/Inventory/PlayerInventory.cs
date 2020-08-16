@@ -79,23 +79,25 @@ namespace Inventory
         /// Equip the item to the correct location.
         /// </summary>
         /// <param name="equippableItem">The item to equip.</param>
-        private void EquipItem(IEquippable itemToEquip)
+        private void EquipItem(ItemBase equippableItem)
         {
-            var weapon = itemToEquip as WeaponBase;
+            var weapon = equippableItem as WeaponBase;
             if (weapon != null)
             {
                 weapon.EquipItem();
 
                 currentWeapon = weapon;
+                itemList.Remove(weapon);
                 return;
             }
 
-            var utilityItem = itemToEquip as UtilityItemBase;
+            var utilityItem = equippableItem as UtilityItemBase;
             if (utilityItem != null)
             {
                 utilityItem.EquipItem();
 
                 currentUtilityItem = utilityItem;
+                itemList.Remove(utilityItem);
                 return;
             }
         }
@@ -104,13 +106,12 @@ namespace Inventory
         /// Consume the item.
         /// </summary>
         /// <param name="itemToConsume">The item to be consumed.</param>
-        private void ConsumeItem(IConsumableItem itemToConsume)
+        private void ConsumeItem(ItemBase itemToConsume)
         {
-            ItemBase heldItem = itemList.Find(item => item.ItemName == (itemToConsume as ItemBase).ItemName);
-            if (heldItem.CurrentStack == 1)
-                itemList.Remove(heldItem);
+            if (itemToConsume.CurrentStack == 1)
+                itemList.Remove(itemToConsume);
             else
-                heldItem.CurrentStack--;
+                itemToConsume.CurrentStack--;
         }
 
         #endregion
@@ -128,13 +129,20 @@ namespace Inventory
             var usedItem = sender as ItemBase;
             if (usedItem != null)
             {
-                if (usedItem as IEquippable != null)
+                ItemBase itemInInventory = itemList[itemList.IndexOf(usedItem)];
+
+                var equippableItem = itemInInventory as IEquippable;
+                if (equippableItem != null)
                 {
-                    EquipItem(usedItem as IEquippable);
+                    EquipItem(itemInInventory);
+                    return;
                 }
-                else if (usedItem as IConsumableItem != null)
+
+                var consumableItem = itemInInventory as IConsumableItem;
+                if (consumableItem != null)
                 {
-                    ConsumeItem(usedItem as IConsumableItem);
+                    ConsumeItem(itemInInventory);
+                    return;
                 }
             }
         }
