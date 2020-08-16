@@ -6,7 +6,7 @@ namespace Inventory
     /// <summary>
     /// Base class for items.
     /// </summary>
-    public abstract class ItemBase
+    public abstract class ItemBase : ScriptableObject
     {
         #region Fields
 
@@ -21,6 +21,12 @@ namespace Inventory
         /// </summary>
         [SerializeField]
         private int maxStack;
+
+        /// <summary>
+        /// Image for the item.
+        /// </summary>
+        [SerializeField]
+        private Sprite itemSprite;
 
         /// <summary>
         /// The current number of this item.
@@ -83,7 +89,7 @@ namespace Inventory
         /// </summary>
         public void UseItem()
         {
-
+            FireOnItemUsed();
         }
 
         #endregion

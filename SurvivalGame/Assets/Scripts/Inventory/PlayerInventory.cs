@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
-using System.Linq;
 
 namespace Inventory
 {
@@ -26,6 +25,11 @@ namespace Inventory
         /// The currently equipped weapon.
         /// </summary>
         private WeaponBase currentWeapon;
+
+        /// <summary>
+        /// The currently equipped utility item.
+        /// </summary>
+        private UtilityItemBase currentUtilityItem;
 
         #endregion
 
@@ -77,12 +81,22 @@ namespace Inventory
         /// <param name="equippableItem">The item to equip.</param>
         private void EquipItem(IEquippable itemToEquip)
         {
-            if (itemToEquip as WeaponBase != null)
+            var weapon = itemToEquip as WeaponBase;
+            if (weapon != null)
             {
-                var weapon = itemToEquip as WeaponBase;
                 weapon.EquipItem();
 
                 currentWeapon = weapon;
+                return;
+            }
+
+            var utilityItem = itemToEquip as UtilityItemBase;
+            if (utilityItem != null)
+            {
+                utilityItem.EquipItem();
+
+                currentUtilityItem = utilityItem;
+                return;
             }
         }
 
