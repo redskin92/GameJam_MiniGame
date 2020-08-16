@@ -35,8 +35,6 @@ namespace Player
             {
                 if(playerWeapon.CanFire())
                 {
-                    Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
-                    Vector3 dir = Input.mousePosition - objectPos;
                     playerWeapon.Fire(this.transform.rotation);                    
                 }
             }
