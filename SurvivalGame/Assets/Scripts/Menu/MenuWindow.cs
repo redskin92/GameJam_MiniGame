@@ -7,10 +7,20 @@ namespace Menu
 {
     public abstract class MenuWindow : MonoBehaviour
     {
+        #region Events
+
         public MenuVisibilityChangedEvent MenuVisibilityChanged;
-        
+
+        #endregion
+
+        #region Fields
+
         [SerializeField]
         protected Button closeMenuButton;
+
+        #endregion
+
+        #region Methods
 
         public virtual void Open()
         {
@@ -40,6 +50,8 @@ namespace Menu
         {
             Close();
         }
+
+        #endregion
     }
 
     public class MenuVisibilityChangedEvent : UnityEvent<bool>

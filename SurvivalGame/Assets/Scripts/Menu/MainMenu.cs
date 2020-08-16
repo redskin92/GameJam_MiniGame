@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,13 +7,19 @@ namespace Menu
 {
     public class MainMenu : MonoBehaviour
     {
+        #region Enums
+
         public enum MenuState
         {
             Root,
             StartGame,
             Options
         };
-        
+
+        #endregion
+
+        #region Fields
+
         [SerializeField]
         private Button startButton;
         
@@ -35,6 +42,10 @@ namespace Menu
 
         private bool _allowLevelSelect = false;
 
+        #endregion
+
+        #region Properties
+
         public MenuState CurrentState
         {
             private get => _currentState;
@@ -43,6 +54,10 @@ namespace Menu
                 _currentState = value;
             }
         }
+
+        #endregion
+
+        #region Methods
 
         private void Start()
         {
@@ -81,7 +96,7 @@ namespace Menu
         {
             #if UNITY_EDITOR
                 // Handle exiting from UI in Editor.
-                UnityEditor.EditorApplication.isPlaying = false;
+                EditorApplication.isPlaying = false;
             #else
                 Application.Quit();
             #endif
@@ -100,5 +115,7 @@ namespace Menu
             
             menuButtonCanvas.enabled = !visible;
         }
+
+        #endregion
     }
 }
