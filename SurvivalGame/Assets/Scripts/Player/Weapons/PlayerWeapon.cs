@@ -6,8 +6,10 @@ namespace Player.Weapons
     {
         private WeaponInfo currentWeapon;
         private float fireRateCooldownTimer = 0.0f;
+        private int currentAmmo;
 
         SpriteRenderer spriteRenderer;
+        bool isBase = true;
 
         private void Awake()
         {
@@ -25,6 +27,7 @@ namespace Player.Weapons
         {
             fireRateCooldownTimer = -1.0f;
             currentWeapon = newWeapon;
+            currentAmmo = currentWeapon.ammo;
 
             spriteRenderer.sprite = newWeapon.weaponSprite;
         }
@@ -39,6 +42,12 @@ namespace Player.Weapons
             fireRateCooldownTimer = currentWeapon.fireRate;
             GameObject newBullet = GameObject.Instantiate(currentWeapon.bulletPrefab, this.transform.position, playerFace);
             newBullet.GetComponent<Bullet>().SetUpBullet();
+            currentAmmo--;            
+        }
+
+        public bool CheckAmmo()
+        {
+            return currentAmmo > 0;
         }
     }
 }

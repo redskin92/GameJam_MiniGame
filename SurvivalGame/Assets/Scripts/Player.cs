@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using Player.Weapons;
+using Inventory;
+using System;
 
 namespace Player
 {
@@ -13,12 +15,17 @@ namespace Player
         [SerializeField]
         private WeaponInfo defaultWeaponInfo;
 
+        private bool isBaseWeapon = true;
+
+        private PlayerInventory playerIneventory;
+
         // Start is called before the first frame update
         void Start()
         {
-            // TODO register for weapon event
+            UpdatePlayersWeapon(defaultWeaponInfo, true);
 
-            playerWeapon.UpdateWeapon(defaultWeaponInfo);
+            playerIneventory = GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<PlayerInventory>();
+            playerIneventory.OnWeaponEquipped += WeaponUpdated;
         }
 
         // Update is called once per frame
@@ -29,13 +36,26 @@ namespace Player
             CheckInput();
         }
 
+        private void WeaponUpdated(object sender, EventArgs args)
+        {
+            WeaponInfo weaponInfo = (WeaponInfo)sender;
+
+            UpdatePlayersWeapon(weaponInfo, false);
+        }
+
         private void CheckInput()
         {
-            if(Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0))
             {
-                if(playerWeapon.CanFire())
+                if (playerWeapon.CanFire())
                 {
-                    playerWeapon.Fire(this.transform.rotation);                    
+                    playerWeapon.Fire(this.transform.rotation);
+
+                    // Check if weapon is expired
+                    if (!isBaseWeapon && !playerWeapon.CheckAmmo())
+                    {
+                        UpdatePlayersWeapon(defaultWeaponInfo, true);                        
+                    }
                 }
             }
         }
@@ -50,6 +70,10 @@ namespace Player
             transform.rotation = Quaternion.Euler(lookToVector);
         }
 
-        
+        private void UpdatePlayersWeapon(WeaponInfo weaponInfo, bool baseWeapon)
+        {
+            playerWeapon.UpdateWeapon(defaultWeaponInfo);
+            isBaseWeapon = baseWeapon;
+        }
     }
 }

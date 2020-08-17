@@ -11,6 +11,7 @@ namespace Player.Weapons
         public FireType fireType;
         public float fireRate;
         public float damage;
+        public int ammo;
 
         public Sprite weaponSprite;
         public Sprite weaponReticle;
