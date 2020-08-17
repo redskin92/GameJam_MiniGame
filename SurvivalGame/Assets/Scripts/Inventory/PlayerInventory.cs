@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using Player.Weapons;
 
 namespace Inventory
 {
@@ -12,6 +13,17 @@ namespace Inventory
         #region Fields
 
         /// <summary>
+        /// The name of the Inventory button.
+        /// </summary>
+        private const string INVENTORY_BUTTON_NAME = "Inventory";
+
+        /// <summary>
+        /// Inventory manager.
+        /// </summary>
+        [SerializeField]
+        private InventoryManager inventoryManager;
+
+        /// <summary>
         /// The amount of inventory space the player has.
         /// </summary>
         private int inventorySpace = 10;
@@ -19,7 +31,7 @@ namespace Inventory
         /// <summary>
         /// List of items in the inventory.
         /// </summary>
-        private List<ItemBase> itemList;
+        private List<ItemBase> itemList = new List<ItemBase>();
 
         /// <summary>
         /// The currently equipped weapon.
@@ -30,6 +42,17 @@ namespace Inventory
         /// The currently equipped utility item.
         /// </summary>
         private UtilityItemBase currentUtilityItem;
+
+        /// <summary>
+        /// Is the inventory currently showing?
+        /// </summary>
+        private bool isInventoryShowing;
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler OnWeaponEquipped;
 
         #endregion
 
@@ -42,6 +65,26 @@ namespace Inventory
         {
             get { return inventorySpace; }
             set { inventorySpace = value; }
+        }
+
+        #endregion
+
+        #region Unity Methods
+
+        private void Start()
+        {
+            inventoryManager.Initialize(InventorySpace, itemList);
+            inventoryManager.OnItemUsed += Item_OnUsed;
+        }
+
+        private void Update()
+        {
+            if (Input.GetButtonDown(INVENTORY_BUTTON_NAME))
+            {
+                inventoryManager.ShowMenu(!isInventoryShowing);
+
+                isInventoryShowing = !isInventoryShowing;
+            }
         }
 
         #endregion
@@ -72,6 +115,7 @@ namespace Inventory
 
             itemList.Add(itemToAdd);
 
+            inventoryManager.Initialize(InventorySpace, itemList);
             return true;
         }
 
@@ -85,6 +129,7 @@ namespace Inventory
             if (weapon != null)
             {
                 weapon.EquipItem();
+                FireOnWeaponEquipped(weapon.weaponInfo);
 
                 currentWeapon = weapon;
                 itemList.Remove(weapon);
@@ -144,6 +189,15 @@ namespace Inventory
                     ConsumeItem(itemInInventory);
                     return;
                 }
+            }
+        }
+
+        private void FireOnWeaponEquipped(WeaponInfo info)
+        {
+            var handler = OnWeaponEquipped;
+            if (handler != null)
+            {
+                handler(info, EventArgs.Empty);
             }
         }
 

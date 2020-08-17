@@ -71,6 +71,14 @@ namespace Inventory
             set { currentStack = value; }
         }
 
+        /// <summary>
+        /// PUblic accessor for itemSprite.
+        /// </summary>
+        public Sprite ItemSprite
+        {
+            get { return itemSprite; }
+        }
+
         #endregion
 
         #region Methods
