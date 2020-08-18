@@ -32,10 +32,10 @@ public class LevelManager : MonoBehaviour
 
         LevelSelected = 0;
 
-        if (levelNames != null && levelNames.Count > 0)
-        {
-            newSceneToLoad = levelNames[0];
-        }
+        //if (levelNames != null && levelNames.Count > 0)
+        //{
+        //    newSceneToLoad = levelNames[0];
+        //}
 
         levels = new List<int>();
 
@@ -148,9 +148,18 @@ public class LevelManager : MonoBehaviour
     {
         backgroundFadeManager.FadeInComplete -= FadeInCompleted;
 
-        SceneManager.sceneUnloaded += LevelUnLoaded;
+        if (currentSceneLoaded != null && currentSceneLoaded.Length > 1)
+        {
+            SceneManager.sceneUnloaded += LevelUnLoaded;
 
-        SceneManager.UnloadSceneAsync(currentSceneLoaded);
+            SceneManager.UnloadSceneAsync(currentSceneLoaded);
+        }
+        else
+        {
+            SceneManager.sceneLoaded += LevelLoaded;
+
+            SceneManager.LoadSceneAsync(newSceneToLoad, LoadSceneMode.Additive);
+        }
     }
 
     /// <summary>
