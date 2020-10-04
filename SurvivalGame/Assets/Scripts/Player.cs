@@ -24,8 +24,8 @@ namespace Player
         {
             UpdatePlayersWeapon(defaultWeaponInfo, true);
 
-            playerIneventory = GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<PlayerInventory>();
-            playerIneventory.OnWeaponEquipped += WeaponUpdated;
+            //playerIneventory = GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<PlayerInventory>();
+            //playerIneventory.OnWeaponEquipped += WeaponUpdated;
         }
 
         // Update is called once per frame

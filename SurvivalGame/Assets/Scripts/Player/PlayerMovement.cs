@@ -5,6 +5,9 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
+    private LevelSegment levelSegment;
+
+    [SerializeField]
     private float xBounds;
 
     [SerializeField]
@@ -16,34 +19,37 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        float x = 0;
-        float y = 0;
+        //if (GameFlow.Instance != null && !GameFlow.Instance.paused)
+        //{
+            float x = 0;
+            float y = 0;
 
-        //Detect when the up arrow key is pressed down
-        if (Input.GetKey(KeyCode.A))
-        {
-            x = -moveSpeed;
-        }
+            //Detect when the up arrow key is pressed down
+            if (Input.GetKey(KeyCode.A))
+            {
+                x = -1;
+            }
 
-        //Detect when the up arrow key has been released
-        if (Input.GetKey(KeyCode.D))
-        {
-            x = moveSpeed;
-        }
+            //Detect when the up arrow key has been released
+            if (Input.GetKey(KeyCode.D))
+            {
+                x = 1;
+            }
 
-        //Detect when the up arrow key is pressed down
-        if (Input.GetKey(KeyCode.W))
-        {
-            y = moveSpeed;
-        }
+            //Detect when the up arrow key is pressed down
+            if (Input.GetKey(KeyCode.W))
+            {
+                y = 1;
+            }
 
-        //Detect when the up arrow key is pressed down
-        if (Input.GetKey(KeyCode.S))
-        {
-            y = -moveSpeed;
-        }
+            //Detect when the up arrow key is pressed down
+            if (Input.GetKey(KeyCode.S))
+            {
+                y = -1;
+            }
 
-        ApplyMovement(x,y);
+            ApplyMovement(x, y);
+        //}
     }
 
     public void ApplyMovement(float x, float y)
@@ -52,9 +58,18 @@ public class PlayerMovement : MonoBehaviour
 
         normalizedMovement.Normalize();
 
-        normalizedMovement.x *= moveSpeed;
+        if (levelSegment != null)
+        {
+            normalizedMovement = levelSegment.SetPlayerBoundsPosition(transform.position, normalizedMovement, transform.localScale.x / 2, transform.localScale.y / 2);
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("Map bounds not set!");
+        }
 
-        normalizedMovement.y *= moveSpeed;
+        normalizedMovement.x *= moveSpeed * Time.deltaTime;
+
+        normalizedMovement.y *= moveSpeed * Time.deltaTime;
 
         transform.position += normalizedMovement;
     }
