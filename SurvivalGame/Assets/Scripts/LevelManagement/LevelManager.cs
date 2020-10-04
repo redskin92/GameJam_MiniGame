@@ -89,24 +89,28 @@ public class LevelManager : MonoBehaviour
     public void MoveToMainMenu()
     {
         MoveToLevel(true, 0);
+        UnLoadUI();
     }
 
     // move to display results after one of our levels
     public void MoveToBeach()
     {
         MoveToLevel(true, 1);
+        LoadInUI();
     }
 
     // move to display results after one of our levels
     public void MoveToForest()
     {
         MoveToLevel(true, 2);
+        LoadInUI();
     }
 
     // load in the game rules
     public void MoveToRockyCoast()
     {
         MoveToLevel(true, 3);
+        LoadInUI();
     }
 
     public int GetLevelCount()

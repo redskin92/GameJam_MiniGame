@@ -40,9 +40,9 @@ namespace Player
 				maxHP = max;
 			}
 
-			float hpDiff;
-			float currentHP;
-			float maxHP;
+			public float hpDiff;
+			public float currentHP;
+			public float maxHP;
 		}
 
 		#endregion

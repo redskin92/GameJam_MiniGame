@@ -26,10 +26,10 @@ namespace HUD
 
         #region Methods
 
-        public override void DataUpdated(PlayerData data)
+        public override void DataUpdated(Player.Player.PlayerEventParams data)
         {
-            _health = data.health;
-            _maxHealth = data.maxHealth;
+            _health = data.currentHP;
+            _maxHealth = data.maxHP;
 
             healthBar.fillAmount = HealthPercentage;
         }

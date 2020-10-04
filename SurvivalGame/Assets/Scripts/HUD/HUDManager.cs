@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HUD
@@ -11,13 +12,6 @@ namespace HUD
 
         public List<PlayerStatContainer> statContainers;
 
-        // TODO: Remove after player stats have been implemented.
-        [SerializeField]
-        public float playerHealth = 100.0f;
-
-        [SerializeField]
-        public float playerMaxHealth = 100.0f;
-
         #endregion
 
         #region Methods
@@ -25,29 +19,19 @@ namespace HUD
         private void Awake()
         {
             Instance = this;
+            Player.Player.PlayerHPChanged += UpdatePlayerData;
         }
 
-        // TODO: Remove. This is only for testing.
-        public void Update()
+        private void OnDestroy()
         {
-            if (playerHealth > playerMaxHealth)
-                playerHealth = playerMaxHealth;
-            if (playerHealth < 0)
-                playerHealth = 0;
-            if (playerMaxHealth < 1)
-                playerMaxHealth = 1;
-        
-            PlayerData d = new PlayerData();
-            d.health = playerHealth;
-            d.maxHealth = playerMaxHealth;
-            Instance.UpdatePlayerData(d);
+            Player.Player.PlayerHPChanged -= UpdatePlayerData;
         }
 
         /// <summary>
         /// Event that should be called when the player's stats change.
         /// </summary>
         /// <param name="data"></param>
-        public void UpdatePlayerData(PlayerData data)
+        public void UpdatePlayerData(Player.Player.PlayerEventParams data)
         {
             if (statContainers == null)
                 return;
