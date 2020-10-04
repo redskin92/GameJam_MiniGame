@@ -14,7 +14,7 @@ namespace Player
 
 		[SerializeField]
 		private WeaponInfo defaultWeaponInfo;
-		
+
 		private bool isBaseWeapon = true;
 
 		private float health;
@@ -22,7 +22,30 @@ namespace Player
 		private bool isDead = false;
 
 		private PlayerInventory playerIneventory;
-		public WeaponBase testWeaponInfo; 
+
+		public WeaponBase testWeaponInfo;
+
+		#region Player HP Events
+		
+		public delegate void PlayerHPChangedEventHandler(PlayerEventParams e);
+
+		public static event PlayerHPChangedEventHandler PlayerHPChanged;
+
+		public struct PlayerEventParams
+		{
+			public PlayerEventParams(float diff, float curr, float max)
+			{
+				hpDiff = diff;
+				currentHP = curr;
+				maxHP = max;
+			}
+
+			float hpDiff;
+			float currentHP;
+			float maxHP;
+		}
+
+		#endregion
 
 		// Start is called before the first frame update
 		void Start()
@@ -104,16 +127,31 @@ namespace Player
 			return health;
 		}
 
+		public float GetMaxHealth()
+		{
+			return maxHealth;
+		}
+
+		/// <summary>
+		/// Damages the player 
+		/// </summary>
+		/// <param name="amount"></param>
 		public void Damage(float amount)
 		{
+			if (isDead)
+				return;
+
+			float healthBefore = health;
 			health -= amount;
 
 			if (health < 0)
 			{
 				health = 0f;
 				isDead = true;
-				// TODO - Fire something for death 
+				// TODO - Fire something for death
 			}
+
+			FireHPEvent(health - healthBefore);
 		}
 
 		/// <summary>
@@ -128,9 +166,22 @@ namespace Player
 			if (isDead)
 				return;
 
+			float healthBefore = health;
+			
 			health += amount;
 			if (health > maxHealth && !overheal)
 				health = maxHealth;
+
+			FireHPEvent(health - healthBefore);
+		}
+
+		private void FireHPEvent(float healthDiff)
+		{
+			var handler = PlayerHPChanged;
+			if (handler != null)
+			{
+				PlayerHPChanged(new PlayerEventParams(healthDiff, health, maxHealth));
+			}
 		}
 
 		#endregion
