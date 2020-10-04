@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 3721248615926357776}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -216,3 +216,4 @@ MonoBehaviour:
     weaponReticle: {fileID: 21300000, guid: a1d1d0ae26cec0447949d1095a264298, type: 3}
     bulletPrefab: {fileID: 8160714516344298647, guid: 99fac9b4345462f4293c9cdd75d7a60c,
       type: 3}
+  testWeaponInfo: {fileID: 0}

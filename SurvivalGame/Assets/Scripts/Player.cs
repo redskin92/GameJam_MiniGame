@@ -5,75 +5,134 @@ using System;
 
 namespace Player
 {
-    public class Player : MonoBehaviour
-    {
-        Vector3 lookToVector = new Vector3();
+	public class Player : MonoBehaviour
+	{
+		Vector3 lookToVector = new Vector3();
 
-        [SerializeField]
-        private PlayerWeapon playerWeapon;
+		[SerializeField]
+		private PlayerWeapon playerWeapon;
 
-        [SerializeField]
-        private WeaponInfo defaultWeaponInfo;
+		[SerializeField]
+		private WeaponInfo defaultWeaponInfo;
+		
+		private bool isBaseWeapon = true;
 
-        private bool isBaseWeapon = true;
+		private float health;
+		private float maxHealth = 100f;
+		private bool isDead = false;
 
-        private PlayerInventory playerIneventory;
+		private PlayerInventory playerIneventory;
+		public WeaponBase testWeaponInfo; 
 
-        // Start is called before the first frame update
-        void Start()
-        {
-            UpdatePlayersWeapon(defaultWeaponInfo, true);
+		// Start is called before the first frame update
+		void Start()
+		{
+			isDead = false;
+			health = maxHealth;
+			UpdatePlayersWeapon(defaultWeaponInfo, true);
 
-            //playerIneventory = GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<PlayerInventory>();
-            //playerIneventory.OnWeaponEquipped += WeaponUpdated;
-        }
+			playerIneventory = GameObject.FindGameObjectWithTag("PlayerInventory").GetComponent<PlayerInventory>();	
+			playerIneventory.OnWeaponEquipped += WeaponUpdated;			
+		}
 
-        // Update is called once per frame
-        void Update()
-        {
-            LookToMouse();
+		private void OnDestroy()
+		{
+			if (playerIneventory != null)
+				playerIneventory.OnWeaponEquipped -= WeaponUpdated;
+		}
 
-            CheckInput();
-        }
+		// Update is called once per frame
+		void Update()
+		{
+			if (isDead)
+				return;
 
-        private void WeaponUpdated(object sender, EventArgs args)
-        {
-            WeaponInfo weaponInfo = (WeaponInfo)sender;
+			LookToMouse();
 
-            UpdatePlayersWeapon(weaponInfo, false);
-        }
+			CheckInput();
+		}
 
-        private void CheckInput()
-        {
-            if (Input.GetMouseButton(0))
-            {
-                if (playerWeapon.CanFire())
-                {
-                    playerWeapon.Fire(this.transform.rotation);
+		private void WeaponUpdated(object sender, EventArgs args)
+		{
+			WeaponInfo weaponInfo = (WeaponInfo)sender;
 
-                    // Check if weapon is expired
-                    if (!isBaseWeapon && !playerWeapon.CheckAmmo())
-                    {
-                        UpdatePlayersWeapon(defaultWeaponInfo, true);                        
-                    }
-                }
-            }
-        }
+			UpdatePlayersWeapon(weaponInfo, false);
+		}
 
-        private void LookToMouse()
-        {
-            Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
-            Vector3 dir = Input.mousePosition - objectPos;
+		private void CheckInput()
+		{
+			if (Input.GetMouseButton(0))
+			{
+				if (playerWeapon.CanFire())
+				{
+					playerWeapon.Fire(this.transform.rotation);
 
-            lookToVector = Vector3.zero;
-            lookToVector.z = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(lookToVector);
-        }
+					// Check if weapon is expired
+					if (!isBaseWeapon && !playerWeapon.CheckAmmo())
+					{
+						UpdatePlayersWeapon(defaultWeaponInfo, true);
+					}
+				}
+			}
 
-        private void UpdatePlayersWeapon(WeaponInfo weaponInfo, bool baseWeapon)
-        {
-            playerWeapon.UpdateWeapon(defaultWeaponInfo);
-            isBaseWeapon = baseWeapon;
-        }
-    }
+			if(Input.GetKey(KeyCode.T))
+			{
+				UpdatePlayersWeapon(testWeaponInfo.weaponInfo, false);
+			}
+		}
+
+		private void LookToMouse()
+		{
+			Vector3 objectPos = Camera.main.WorldToScreenPoint(transform.position);
+			Vector3 dir = Input.mousePosition - objectPos;
+
+			lookToVector = Vector3.zero;
+			lookToVector.z = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+			transform.rotation = Quaternion.Euler(lookToVector);
+		}
+
+		private void UpdatePlayersWeapon(WeaponInfo weaponInfo, bool baseWeapon)
+		{
+			playerWeapon.UpdateWeapon(weaponInfo);
+			isBaseWeapon = baseWeapon;
+		}
+
+		#region Player Health 
+
+		public float GetHealth()
+		{
+			return health;
+		}
+
+		public void Damage(float amount)
+		{
+			health -= amount;
+
+			if (health < 0)
+			{
+				health = 0f;
+				isDead = true;
+				// TODO - Fire something for death 
+			}
+		}
+
+		/// <summary>
+		/// Heals the player. 
+		/// If you want to heal to max health send float.max and overheal to false.
+		/// overheal will allow the players HP to exceed max health.
+		/// </summary>
+		/// <param name="amount"></param>
+		/// <param name="overheal"></param>
+		public void Heal(float amount, bool overheal = false)
+		{
+			if (isDead)
+				return;
+
+			health += amount;
+			if (health > maxHealth && !overheal)
+				health = maxHealth;
+		}
+
+		#endregion
+	}
 }

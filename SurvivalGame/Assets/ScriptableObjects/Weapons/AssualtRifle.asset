@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4257c859e746e354a9a9ce46db40b244, type: 3}
+  m_Name: AssualtRifle
+  m_EditorClassIdentifier: 
+  itemName: Assault Rifle
+  maxStack: 0
+  itemSprite: {fileID: 21300000, guid: d5b03e9249ebd684fad8e447dc9fd2c6, type: 3}
+  weaponInfo:
+    fireType: 0
+    fireRate: 0.2
+    damage: 5
+    ammo: 25
+    weaponSprite: {fileID: 21300000, guid: d5b03e9249ebd684fad8e447dc9fd2c6, type: 3}
+    weaponReticle: {fileID: 21300000, guid: 5f73ef9fc1cd5d04caa7d296980c07cd, type: 3}
+    bulletPrefab: {fileID: 8160714516344298647, guid: 99fac9b4345462f4293c9cdd75d7a60c,
+      type: 3}
