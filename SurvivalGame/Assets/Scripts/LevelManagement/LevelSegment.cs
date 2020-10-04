@@ -19,6 +19,12 @@ public class Segment
 public class LevelSegment : MonoBehaviour
 {
     [SerializeField]
+    private PlayerMovement player;
+
+    [SerializeField]
+    private GameObject arrowPrefab;
+
+    [SerializeField]
     private new Camera camera;
 
     [SerializeField]
@@ -32,6 +38,12 @@ public class LevelSegment : MonoBehaviour
 
     [SerializeField]
     private float HUDDispplaySize = 100.0f;
+
+    [SerializeField]
+    private int xArrowOffset = 370;
+
+    [SerializeField]
+    private int yArrowOffset = 270;
 
     private float mapBoundX = 800.0f;
     private float mapBoundY = 600.0f;
@@ -54,8 +66,8 @@ public class LevelSegment : MonoBehaviour
     {
         new KeyValuePair<int, int>( 0, 1),
         new KeyValuePair<int, int>( 0, -1),
-        new KeyValuePair<int, int>( 1, 0),
-        new KeyValuePair<int, int>( -1, 0)
+        new KeyValuePair<int, int>( -1, 0),
+        new KeyValuePair<int, int>( 1, 0)
     };
 
     // Start is called before the first frame update
@@ -65,30 +77,35 @@ public class LevelSegment : MonoBehaviour
 
         for(int i = 0; i < numSegments; ++i)
         {
-            segments.Add(new Segment(i / 3, i % 3));
+            segments.Add(new Segment(i / xSegments, i % ySegments));
         }
 
         Transitioning = false;
+
+        GenerateArrows();
     }
 
     public void MoveQuadrant(int direction)
     {
-        KeyValuePair<int, int> move = directions[direction];
-
-        //UnityEngine.Debug.Log("X moved to: " + (currentX + move.Key));
-        //UnityEngine.Debug.Log("Y moved to: " + (currentY + move.Value));
-
-        if (currentX + move.Key >= 0 && currentX + move.Key <= xSegments
-            && currentY + move.Value >= 0 && currentY + move.Value <= xSegments)
+        if (!Transitioning)
         {
-            nextX = currentX + move.Key;
-            nextY = currentY + move.Value;
+            KeyValuePair<int, int> move = directions[direction];
 
-            currentDirection = direction;
+            //UnityEngine.Debug.Log("X moved to: " + (currentX + move.Key));
+            //UnityEngine.Debug.Log("Y moved to: " + (currentY + move.Value));
 
-            currentTime = 0;
+            if (currentX + move.Key >= 0 && currentX + move.Key <= xSegments
+                && currentY + move.Value >= 0 && currentY + move.Value <= xSegments)
+            {
+                nextX = currentX + move.Key;
+                nextY = currentY + move.Value;
 
-            Transitioning = true;
+                currentDirection = direction;
+
+                currentTime = 0;
+
+                Transitioning = true;
+            }
         }
     }
 
@@ -127,7 +144,11 @@ public class LevelSegment : MonoBehaviour
                 position.y = (currentY + (currentTime / transitionTime)) * 600;
             }
 
+            Vector3 difference = position - camera.transform.position;
+
             camera.transform.position = position;
+
+            player.transform.position += (difference / 10);
         }
     }
 
@@ -219,5 +240,54 @@ public class LevelSegment : MonoBehaviour
         move.Normalize();
 
         return move;
+    }
+
+    protected void GenerateArrows()
+    {
+        for (int i = 0; i < segments.Count; ++i)
+        {
+            int x = segments[i].x;
+            int y = segments[i].y;
+
+            if(x != 0)
+            {
+                Vector3 position = new Vector3(x * mapBoundX, y * mapBoundY, 0);
+                position.x -= xArrowOffset;
+                CreateArrow(2, position);
+            }
+
+            if (x < xSegments - 1)
+            {
+                Vector3 position = new Vector3(x * mapBoundX, y * mapBoundY, 0);
+                position.x += xArrowOffset;
+                CreateArrow(3, position);
+            }
+
+            if (y != 0)
+            {
+                Vector3 position = new Vector3(x * mapBoundX, y * mapBoundY, 0);
+                position.y -= yArrowOffset;
+                CreateArrow(1, position);
+            }
+
+            if (y < ySegments - 1)
+            {
+                Vector3 position = new Vector3(x * mapBoundX, y * mapBoundY, 0);
+                position.y += yArrowOffset;
+                CreateArrow(0, position);
+            }
+        }
+    }
+
+    protected void CreateArrow(int direction, Vector3 position)
+    {
+        GameObject arrow = Instantiate(arrowPrefab, position, Quaternion.identity);
+
+        MapTransitionArrow mapArrow = arrow.GetComponent<MapTransitionArrow>();
+
+        if(mapArrow != null)
+        {
+            mapArrow.UpdateDirection(direction);
+        }
     }
 }
